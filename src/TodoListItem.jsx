@@ -1,24 +1,20 @@
-const TodoListItem = ({
-  id,
-  text,
-  done,
-  handleCheckboxClick,
-  handleTaskDelete,
-}) => {
-  const classes = `todo-list__item list-item ${done ? 'list-item_done' : ''}`;
+const TodoListItem = ({ task, handleCheckboxClick, handleTaskDelete }) => {
+  const classes = `todo-list__item list-item ${
+    task.done ? 'list-item_done' : ''
+  }`;
   return (
     <li className={classes}>
       <input
         className="list-item__checkbox"
         type="checkbox"
         name="done"
-        checked={done}
-        onChange={() => handleCheckboxClick(id)}
+        checked={task.done}
+        onChange={() => handleCheckboxClick(task)}
       />
-      <span className="list-item__text">{text}</span>
+      <span className="list-item__text">{task.text}</span>
       <button
         className="list-item__deleteBtn"
-        onClick={() => handleTaskDelete(id)}
+        onClick={() => handleTaskDelete(task.id)}
       ></button>
     </li>
   );

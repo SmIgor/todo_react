@@ -1,32 +1,59 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TaskCreationForm from './TaskCreationForm';
 import TodoListItem from './TodoListItem';
+import { getData, postData, putData, deleteData } from './gateway';
 
 const TodoList = () => {
-  const [tasks, setTasks] = useState([
-    { id: 1, text: 'loremloremloremloremlorem', done: false },
-    { id: 2, text: '123', done: false },
-    { id: 3, text: 'dada', done: false },
-    { id: 4, text: 'XD', done: true },
-  ]);
+  const [tasks, setTasks] = useState([]);
 
-  const handleCreate = text => {
-    setTasks([...tasks, { id: Date.now(), text, done: false }]);
+  useEffect(() => {
+    async function fetchData() {
+      const tasks = await getData();
+      setTasks(tasks);
+    }
+    try {
+      fetchData();
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  const handleCreate = async text => {
+    try {
+      await postData({ text, done: false });
+      const newTasksList = await getData();
+      setTasks(newTasksList);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleCheckboxClick = id => {
+  const handleCheckboxClick = async taskToUpdate => {
+    const updatedtask = { ...taskToUpdate, done: !taskToUpdate.done };
+
     const updatedTasks = tasks.map(task => {
-      if (task.id === id) {
-        return { ...task, done: !task.done };
+      if (task.id === taskToUpdate.id) {
+        return updatedtask;
       }
       return task;
     });
 
-    setTasks(updatedTasks);
+    try {
+      await putData(updatedtask);
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const handleTaskDelete = id => {
-    setTasks([...tasks].filter(task => task.id !== id));
+  const handleTaskDelete = async id => {
+    const updatedTasks = tasks.filter(task => task.id !== id);
+    try {
+      await deleteData(id);
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -38,7 +65,7 @@ const TodoList = () => {
           {tasks.map(task => (
             <TodoListItem
               key={task.id}
-              {...task}
+              task={task}
               handleCheckboxClick={handleCheckboxClick}
               handleTaskDelete={handleTaskDelete}
             />

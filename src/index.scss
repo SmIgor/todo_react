@@ -17,7 +17,8 @@ $borderc: #f6dd65;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 15px;
 }
 
 .title {
@@ -29,7 +30,7 @@ $borderc: #f6dd65;
   background-color: #999589;
   padding: 15px;
   border-radius: 15px;
-  min-width: 500px;
+  max-width: 600px;
   &__task-creation {
     margin-bottom: 10px;
   }
@@ -50,8 +51,9 @@ $borderc: #f6dd65;
     margin-right: 8px;
     border-radius: 10px;
     outline: none;
-    font: inherit;
     flex: 1;
+    min-width: 0;
+    font: inherit;
     @extend %defborder;
   }
 }

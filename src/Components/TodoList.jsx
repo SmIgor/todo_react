@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import TaskCreationForm from './TaskCreationForm';
 import TodoListItem from './TodoListItem';
-import { getData, postData, putData, deleteData } from './gateway';
+import { getData, postData, putData, deleteData } from '../gateway';
 
 const TodoList = () => {
   const [tasks, setTasks] = useState([]);
